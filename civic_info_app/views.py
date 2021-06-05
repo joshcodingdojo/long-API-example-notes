@@ -69,26 +69,33 @@ def index(request):
   # this gets the api data and response is saved to variable r
   # To change the address, just change the part of 
   r = requests.get(f"https://www.googleapis.com/civicinfo/v2/representatives?key={API_KEY}&address=233WLantanaRd,Lantana,FL33462&includeOffices=true")
-  print(r) 
-  print("=========================================================================================")
-  print("=========================================================================================")
-  print("=========================================================================================")
+  # print(r) 
   # This prints "<Response [200]>", so we need to turn it into json
   json = r.json()
-  print(json)
-  print("=========================================================================================")
-  print("=========================================================================================")
-  print("=========================================================================================")
+  # print(json)
+  
   # now the json variable stores a massive python dictionary
   # the data you need is located in json['offices'] and json['officials']
   # Below is how you get access to all of the different elected offices based on user address
+  print('GETS HERE')
+  # loop through offices
   for i in json['offices']:
-    print(i)
+    # loop through official Indices
+    for j in i['officialIndices']:
+      # print the dictionary we are adding a new key to
+      print(json['officials'][j], i['name'])
+      print('======= IS NOW =======')
+      # go into the officials array of dictionaries, get index j, and add elected_office as key to dictionary
+      json['officials'][j]['elected_office'] = i['name'] 
+      print(json['officials'][j])
+    # print(i['name'], i['officialIndices'])
+
+
   print("=========================================================================================")
   # This gives us every elected official for person's current address 
-  print(len(json['officials']))
-  for i in json['officials']:
-    print(i)
+  # print(len(json['officials']))
+  # for i in json['officials']:
+  #   print(i)
   # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT INFO BELOW !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   # You will need to "massage" the API data because if you look closely, when looping through
   # json['officials'] above, the dictionaries DO NOT contain the office each official holds
